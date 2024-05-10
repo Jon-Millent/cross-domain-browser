@@ -14,7 +14,7 @@
       "mirror": "https://s.totoro.top"
     },
     "appId": "top.totoro.cross-domain-browser",
-    "productName": "cross-domain-browser",
+    "productName": "Cross Domain Browser",
     "directories": {
       "output": "dist"
     },
