@@ -1,12 +1,37 @@
 {
-  "name": "electron-quick-start",
+  "name": "cross-domain-browser",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "cross-domain-browser",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build:win": "electron-builder --win",
+    "build:mac": "electron-builder --mac",
+    "build:linux": "electron-builder --linux"
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "build": {
+    "electronDownload": {
+      "mirror": "https://s.totoro.top"
+    },
+    "appId": "top.totoro.cross-domain-browser",
+    "productName": "cross-domain-browser",
+    "directories": {
+      "output": "dist"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "static/icon/icon.icns"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "static/icon/icon.ico"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "static/icon/icon.png"
+    }
+  },
+  "repository": "https://github.com/Jon-Millent/cross-domain-browser",
   "keywords": [
     "Electron",
     "quick",
@@ -14,9 +39,10 @@
     "tutorial",
     "demo"
   ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
+  "author": "jon millent",
+  "license": "MIT",
   "devDependencies": {
-    "electron": "^30.0.2"
+    "electron": "^30.0.3",
+    "electron-builder": "^24.13.3"
   }
 }

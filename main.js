@@ -1,19 +1,24 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('node:path')
+
+let mainWindow;
 
 function createWindow () {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: true,
+      webSecurity: false // 允许跨域请求
     }
   })
 
   // and load the index.html of the app.
   mainWindow.loadFile('index.html')
+
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
@@ -38,6 +43,29 @@ app.whenReady().then(() => {
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') app.quit()
 })
+
+ipcMain.on('replace-url', (event, url) => {
+  mainWindow.loadURL(url);
+});
+
+
+// 监听渲染进程发送的消息，用于控制网页内容的加载
+ipcMain.on('load-page', (event, url) => {
+  // 加载网页内容的渲染进程
+  let contentWindow = new BrowserWindow({
+    width: 1200,
+    height: 600,
+    webPreferences: {
+      nodeIntegration: true,
+      webSecurity: false, // 允许跨域请求
+    }
+  });
+  
+  contentWindow.loadURL(url);
+
+  // 打开开发者工具
+  contentWindow.webContents.openDevTools();
+});
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
